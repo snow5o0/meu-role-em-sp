@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101114">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="meu rolê em SP">
+  <meta name="description" content="Seu guia inteligente para aproveitar São Paulo.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>meu rolê em SP</title>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Início">meu rolê <span>em SP.</span></a>
+    <span class="top-pill"><i></i> SUA VIAGEM</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">SEU GUIA DE VIAGEM</p>
+      <h1>São Paulo,<br><em>no seu ritmo.</em></h1>
+      <p class="muted">Organize os passeios, acompanhe os horários e aproveite cada minuto.</p>
+      <div class="hero-stats">
+        <div><small>ORIGEM</small><strong>Ribeirão Preto</strong></div>
+        <div><small>DESTINO</small><strong>São Paulo, SP</strong></div>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="Navegação principal">
+      <button class="tab active" data-tab="inicio">Início</button>
+      <button class="tab" data-tab="roteiro">Roteiro</button>
+      <button class="tab" data-tab="viagem">Viagem</button>
+      <button class="tab" data-tab="mapa">Mapa</button>
+    </nav>
+
+    <section id="inicio" class="panel active">
+      <div class="section-head">
+        <div><p class="eyebrow">PAINEL</p><h2>Seu dia, organizado.</h2></div>
+        <span class="date-chip" id="todayLabel">Sua viagem</span>
+      </div>
+      <article class="next-card">
+        <div class="card-top"><span class="eyebrow light">PRÓXIMA ATIVIDADE</span><span class="status" id="nextStatus">Aguardando roteiro</span></div>
+        <h3 id="nextTitle">Seu primeiro rolê começa aqui.</h3>
+        <p id="nextMeta">Importe ou cadastre os locais que deseja visitar.</p>
+        <div class="timer-row">
+          <div><small id="timerCaption">CRONÔMETRO</small><strong id="timerDisplay">00:00:00</strong></div>
+          <button class="timer-button" id="timerButton">Iniciar</button>
+        </div>
+      </article>
+      <div class="quick-grid">
+        <button class="quick-card" data-goto="roteiro"><span>＋</span><b>Adicionar locais</b><small>Monte seu roteiro</small></button>
+        <button class="quick-card" data-goto="viagem"><span>✈</span><b>Dados da viagem</b><small>Hotel e voo</small></button>
+      </div>
+      <div class="section-head compact"><div><p class="eyebrow">PLANEJAMENTO</p><h2>Regras ativas</h2></div></div>
+      <div class="rule-list">
+        <div>↗ <span>Reorganizar passeios para otimizar o percurso</span><b>Ativo</b></div>
+        <div>⇄ <span>Combinar meios de transporte</span><b>Ativo</b></div>
+        <div>✓ <span>Aprovar antes de substituir o roteiro</span><b>Ativo</b></div>
+        <div>⌂ <span>Priorizar retorno ao hotel no fim do dia</span><b>Ativo</b></div>
+      </div>
+    </section>
+
+    <section id="roteiro" class="panel">
+      <div class="section-head"><div><p class="eyebrow">SEU PLANEJAMENTO</p><h2>Meu roteiro</h2></div><span class="count" id="placeCount">0 locais</span></div>
+      <div class="card">
+        <label for="routeText">Importar roteiro escrito</label>
+        <textarea id="routeText" rows="5" placeholder="Ex.: MASP&#10;Parque Ibirapuera&#10;Mercado Municipal&#10;Liberdade&#10;Pinacoteca"></textarea>
+        <p class="hint">Escreva um local por linha. Também é possível colar um texto com nomes de atrações.</p>
+        <div class="button-row">
+          <button class="button primary" id="parseButton">Ler roteiro</button>
+          <label class="button secondary file-label">Enviar arquivo<input id="fileInput" type="file" accept=".txt,.md,.csv,text/plain"></label>
+        </div>
+      </div>
+      <div class="section-head compact"><div><p class="eyebrow">LOCAIS IDENTIFICADOS</p><h2>Paradas</h2></div><button class="text-button" id="addPlaceButton">＋ Adicionar</button></div>
+      <div id="placeList" class="place-list empty">Seus locais aparecerão aqui depois da importação.</div>
+      <div class="optimizer card">
+        <p class="eyebrow">OTIMIZADOR DE ROTA</p>
+        <h3>Uma sequência mais inteligente.</h3>
+        <p class="muted">A proposta poderá reorganizar livremente os locais, combinar transportes e considerar o hotel como ponto de retorno no fim de cada dia.</p>
+        <div class="notice">Nesta versão inicial, a sugestão é uma prévia de organização. Endereços, distâncias, trânsito e rotas reais precisam ser verificados com o serviço de mapas na próxima etapa.</div>
+        <button class="button primary full" id="optimizeButton">Gerar sugestão de roteiro</button>
+      </div>
+      <div id="proposal" class="proposal hidden"></div>
+    </section>
+
+    <section id="viagem" class="panel">
+      <div class="section-head"><div><p class="eyebrow">LOGÍSTICA</p><h2>Dados da viagem</h2></div></div>
+      <div class="card form-card">
+        <h3>Ribeirão Preto → São Paulo</h3>
+        <label>Local de partida<input id="origin" value="Ribeirão Preto, SP"></label>
+        <div class="two-col">
+          <label>Data de saída<input id="departureDate" type="date"></label>
+          <label>Horário de saída<input id="departureTime" type="time"></label>
+        </div>
+        <label>Meio de transporte<input id="intercityMode" placeholder="Ex.: ônibus, carro"></label>
+        <div class="two-col">
+          <label>Chegada prevista<input id="arrivalDate" type="date"></label>
+          <label>Horário de chegada<input id="arrivalTime" type="time"></label>
+        </div>
+        <label>Local de desembarque em São Paulo<input id="arrivalPlace" placeholder="Ex.: Terminal Rodoviário do Tietê"></label>
+        <label>Endereço ou referência<input id="arrivalAddress" placeholder="Preencha quando confirmar"></label>
+      </div>
+      <div class="card form-card">
+        <h3>Minha hospedagem</h3>
+        <label>Nome do hotel<input id="hotelName" placeholder="Nome da hospedagem"></label>
+        <label>Endereço completo<input id="hotelAddress" placeholder="Endereço do hotel em São Paulo"></label>
+        <div class="two-col">
+          <label>Check-in<input id="checkin" type="time"></label>
+          <label>Check-out<input id="checkout" type="time"></label>
+        </div>
+        <p class="hint">O hotel será considerado ponto de referência e retorno ao final dos dias de passeio.</p>
+      </div>
+      <div class="card form-card">
+        <h3>Voo de volta para Fortaleza</h3>
+        <label>Data do voo<input id="flightDate" type="date"></label>
+        <div class="two-col">
+          <label>Horário do voo<input id="flightTime" type="time"></label>
+          <label>Aeroporto<input id="airport" value="Aeroporto de Guarulhos (GRU)"></label>
+        </div>
+        <label>Terminal<input id="terminal" placeholder="Ex.: Terminal 1"></label>
+        <label>Companhia / voo (opcional)<input id="flightNumber" placeholder="Ex.: Azul 2642"></label>
+        <p class="hint">O sistema reservará margem de segurança para deslocamento, procedimentos do aeroporto e embarque. A recomendação final dependerá dos dados confirmados do voo.</p>
+      </div>
+      <button class="button primary full" id="saveTrip">Salvar dados da viagem</button>
+      <p class="save-feedback" id="saveFeedback" role="status"></p>
+    </section>
+
+    <section id="mapa" class="panel">
+      <div class="section-head"><div><p class="eyebrow">DESLOCAMENTOS</p><h2>Mapa e rotas</h2></div></div>
+      <div class="card">
+        <div class="map-placeholder"><div class="map-pin">⌖</div><strong>Seu mapa começa com os locais</strong><span>Adicione atrações no roteiro para abrir pesquisas e trajetos nos mapas.</span></div>
+        <div class="route-shortcuts">
+          <a id="hotelMapLink" class="button secondary disabled" href="#" target="_blank" rel="noopener">Ver hotel no mapa</a>
+          <a id="airportMapLink" class="button secondary disabled" href="#" target="_blank" rel="noopener">Ver aeroporto no mapa</a>
+        </div>
+      </div>
+      <div id="mapPlaces" class="place-list empty">Os atalhos para os locais aparecerão aqui.</div>
+    </section>
+  </main>
+
+  <footer><span>meu rolê em SP.</span><small>Feito para aproveitar cada minuto.</small></footer>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
